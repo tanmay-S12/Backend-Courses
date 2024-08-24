@@ -1,5 +1,7 @@
 package com.backend_courses.courses_backend.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -22,5 +24,8 @@ public class CourseModel {
 
     @Column(length = 1000) 
     private String description;
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CourseInstanceModel> courseInstances = new ArrayList<CourseInstanceModel>();
 }
 

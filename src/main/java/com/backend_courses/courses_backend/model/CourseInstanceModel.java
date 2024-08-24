@@ -19,15 +19,15 @@ public class CourseInstanceModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; 
-    
+
     @Column(nullable = false)
     private int year; 
     
     @Column(nullable = false)
     private int semester; 
 
-     @ManyToOne 
-     @JoinColumn(name = "course_id", nullable = false) 
-     private CourseModel course; 
+    @ManyToOne 
+    @JoinColumn(name = "course_id", nullable = false) 
+    private CourseModel course; 
     }
 
