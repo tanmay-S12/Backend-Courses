@@ -1,48 +1,44 @@
 package com.backend_courses.courses_backend.controller;
 
+import com.backend_courses.courses_backend.Course;
 import com.backend_courses.courses_backend.model.CourseModel;
 import com.backend_courses.courses_backend.service.CourseService;
+
+import lombok.Data;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.util.Optional;
 import java.util.List;
 
+@Data
 @RestController
 @RequestMapping("/api")
 public class CourseController {
-
     @Autowired
-    private CourseService courseService;
+    CourseService courseService;
 
     @PostMapping("/courses")
-    public ResponseEntity<CourseModel> createCourse(@RequestBody CourseModel course) {
-        CourseModel savedCourse = courseService.saveCourse(course);
-        return savedCourse != null ? ResponseEntity.ok(savedCourse) : ResponseEntity.status(500).build();
+    public String createCourse(@RequestBody Course course) {
+        return courseService.saveCourse(course);
     }
 
     @GetMapping("/courses")
     public ResponseEntity<List<CourseModel>> getAllCourses() {
-        List<CourseModel> courses = courseService.getAllCourses();
-        return ResponseEntity.ok(courses);
+        return new ResponseEntity<>(courseService.getAllCourses(), HttpStatus.FOUND);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CourseModel> getCourseById(@PathVariable Long id) {
-        Optional<CourseModel> course = courseService.getCourseById(id);
-        return course.map(ResponseEntity::ok)
-                     .orElseGet(() -> ResponseEntity.notFound().build());
+    public Optional<CourseModel> getCourseById(@PathVariable Long id) {
+        return courseService.getCourseById(id);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCourseById(@PathVariable Long id) {
-        if (courseService.getCourseById(id).isPresent()) {
-            courseService.deleteCourseById(id);
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public boolean deleteCourseById(@PathVariable Long id) {
+        return courseService.deleteCourseById(id);
     }
+
 }
