@@ -8,9 +8,11 @@ import java.util.Optional;
 
 @Repository
 public interface CourseInstanceRepository extends JpaRepository<CourseInstanceModel, Long> {
+
     List<CourseInstanceModel> findByYearAndSemester(int year, int semester);
 
-    Optional<CourseInstanceModel> findByIdAndYearAndSemester(Long id, int year, int semester);
-    
-    void deleteByIdAndYearAndSemester(Long id, int year, int semester);
+    Optional<CourseInstanceModel> findByYearAndSemesterAndCourseId(int year, int semester, Long courseId);
+
+    // void deleteByIdAndYearAndSemester( int year, int semester, Long courseid);
+
 }

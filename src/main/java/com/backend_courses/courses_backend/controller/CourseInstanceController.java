@@ -1,53 +1,76 @@
 package com.backend_courses.courses_backend.controller;
 
-import com.backend_courses.courses_backend.model.CourseInstanceModel;
+import com.backend_courses.courses_backend.CourseInstance;
 import com.backend_courses.courses_backend.service.CourseInstanceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
+
 public class CourseInstanceController {
 
     @Autowired
     private CourseInstanceService courseInstanceService;
 
     @PostMapping("/instances")
-    public ResponseEntity<CourseInstanceModel> createCourseInstance(@RequestBody CourseInstanceModel courseInstance) {
-        CourseInstanceModel savedInstance = courseInstanceService.saveCourseInstance(courseInstance);
-        return savedInstance != null ? ResponseEntity.ok(savedInstance) : ResponseEntity.status(500).build();
+    public String createInstace(@RequestBody CourseInstance cInstance) {
+        return courseInstanceService.saveCourseInstance(cInstance);
     }
 
-    
+    @GetMapping("/allinstances")
+    public ResponseEntity<List<CourseInstance>> getAllInstances() {
+        List<CourseInstance> courses = courseInstanceService.getAllInstances();
+
+        if (courses.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(courses);
+    }
 
     // GET /api/instances/2020/1
     @GetMapping("/instances/{year}/{semester}")
-    public ResponseEntity<List<CourseInstanceModel>> getCoursesByYearAndSemester(@PathVariable int year, @PathVariable int semester) {
-        List<CourseInstanceModel> instances = courseInstanceService.getCoursesByYearAndSemester(year, semester);
-        return instances.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(instances);
-    }
+    public ResponseEntity<List<CourseInstance>> getCoursesByYearAndSemester(
+            @PathVariable int year,
+            @PathVariable int semester) {
+        List<CourseInstance> courses = courseInstanceService.getCoursesByYearAndSemester(year, semester);
 
-    @GetMapping("/instances/{year}/{semester}/{id}")
-    public ResponseEntity<CourseInstanceModel> getCourseInstanceById(@PathVariable int year, @PathVariable int semester, @PathVariable Long id) {
-        Optional<CourseInstanceModel> instance = courseInstanceService.getCourseInstanceById(year, semester, id);
-        return instance.map(ResponseEntity::ok)
-                       .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    
-    @DeleteMapping("/instances/{year}/{semester}/{id}")
-    public ResponseEntity<Void> deleteCourseInstanceById(@PathVariable int year, @PathVariable int semester, @PathVariable Long id) {
-        if (courseInstanceService.getCourseInstanceById(year, semester, id).isPresent()) {
-            courseInstanceService.deleteCourseInstanceById(year, semester, id);
+        if (courses.isEmpty()) {
             return ResponseEntity.noContent().build();
-        } else {
+        }
+        return ResponseEntity.ok(courses);
+    }
+
+    // @GetMapping("/instances/{year}/{semester}/{courseid}")
+    @GetMapping("/instances/{year}/{semester}/{courseId}")
+    public ResponseEntity<CourseInstance> InstanceByYearAndSemesterAndId(
+            @PathVariable int year, @PathVariable int semester, @PathVariable long courseId) {
+        CourseInstance courseInstance = courseInstanceService.InstanceByYearAndSemesterAndCourseId(year, semester,
+                courseId);
+        if (courseInstance == null) {
             return ResponseEntity.notFound().build();
         }
+
+        return ResponseEntity.ok(courseInstance);
     }
+
+    // @DeleteMapping("/instances/{year}/{semester}/{courseid}")
+
+    @DeleteMapping("/instances/{year}/{semester}/{courseId}")
+    public ResponseEntity<String> deleteCourseInstance(@PathVariable int year, @PathVariable int semester,
+            @PathVariable long courseId) {
+        boolean isDeleted = courseInstanceService.deleteCourseInstanceByCourseId(year, semester, courseId);
+
+        if (isDeleted) {
+            return ResponseEntity.ok("Course instance deleted successfully.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Course instance not found.");
+        }
+    }
+
 }
-
-

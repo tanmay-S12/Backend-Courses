@@ -13,4 +13,5 @@ public class CourseInstance {
     private Long id; 
     private int year; 
     private int semester; 
+    private long course_id;
 }

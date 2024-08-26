@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+
 import java.util.List;
 
 @Data
@@ -30,13 +30,14 @@ public class CourseController {
     public ResponseEntity<List<CourseModel>> getAllCourses() {
         return new ResponseEntity<>(courseService.getAllCourses(), HttpStatus.FOUND);
     }
+  
 
-    @GetMapping("/{id}")
-    public Optional<CourseModel> getCourseById(@PathVariable Long id) {
+    @GetMapping("/courses/{id}")
+    public Course getCourseById(@PathVariable Long id) {
         return courseService.getCourseById(id);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/courses/{id}")
     public boolean deleteCourseById(@PathVariable Long id) {
         return courseService.deleteCourseById(id);
     }
