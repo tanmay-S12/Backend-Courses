@@ -35,7 +35,7 @@ public class CourseInstanceService implements ICourseInstanceServices {
             CourseInstance courseInstance = new CourseInstance();
 
             courseInstance.setId(cinst.getId());
-            courseInstance.setCourse_id(cinst.getCourseId());
+            courseInstance.setCourseCode(cinst.getCourseCode());
             courseInstance.setSemester(cinst.getSemester());
             courseInstance.setYear(cinst.getYear());
 
@@ -53,8 +53,8 @@ public class CourseInstanceService implements ICourseInstanceServices {
         for (CourseInstanceModel cinst : instancesByYearSem) {
 
             CourseInstance courseins = new CourseInstance();
-            courseins.setId(cinst.getId());
-            courseins.setCourse_id(cinst.getCourseId());
+            // courseins.setId(cinst.getId());
+            courseins.setCourseCode(cinst.getCourseCode());
             courseins.setSemester(cinst.getSemester());
             courseins.setYear(cinst.getYear());
             cInstanceByYearSem.add(courseins);
@@ -62,16 +62,16 @@ public class CourseInstanceService implements ICourseInstanceServices {
         return cInstanceByYearSem;
     }
 
-    public CourseInstance InstanceByYearAndSemesterAndCourseId(int year, int semester, Long courseId) {
+    public CourseInstance InstanceByYearAndSemesterAndCourseCode(int year, int semester, String courseCode) {
 
         Optional<CourseInstanceModel> CourseInstanceModel = courseInstanceRepository
-                .findByYearAndSemesterAndCourseId(year, semester, courseId);
+                .findByYearAndSemesterAndCourseCode(year, semester, courseCode);
 
         if (CourseInstanceModel.isPresent()) {
             CourseInstanceModel courseInstanceModel = CourseInstanceModel.get();
             CourseInstance courseInstance = new CourseInstance();
-            courseInstance.setId(courseInstanceModel.getId());
-            courseInstance.setCourse_id(courseInstanceModel.getCourseId());
+            // courseInstance.setId(courseInstanceModel.getId());
+            courseInstance.setCourseCode(courseInstanceModel.getCourseCode());
             courseInstance.setSemester(courseInstanceModel.getSemester());
             courseInstance.setYear(courseInstanceModel.getYear());
             return courseInstance;
@@ -81,10 +81,10 @@ public class CourseInstanceService implements ICourseInstanceServices {
     }
 
     @Override
-    public boolean deleteCourseInstanceByCourseId(int year, int semester, Long courseId) {
+    public boolean deleteCourseInstanceByCourseCode(int year, int semester, String courseCode) {
 
         Optional<CourseInstanceModel> optionalCourseInstanceModel = courseInstanceRepository
-                .findByYearAndSemesterAndCourseId(year, semester, courseId);
+                .findByYearAndSemesterAndCourseCode(year, semester, courseCode);
 
         if (optionalCourseInstanceModel.isPresent()) {
 

@@ -25,10 +25,8 @@ public class CourseInstanceModel {
 
     @Column(nullable = false)
     private int semester;
-
-    // @Column(nullable = false)
-    // private Long course_id;
-
+    
     @Column(name = "course_id", nullable = false)
-    private Long courseId; 
+    // private Long courseId; 
+    private String courseCode;
 }

@@ -24,6 +24,7 @@ public class CourseInstanceController {
 
     @GetMapping("/allinstances")
     public ResponseEntity<List<CourseInstance>> getAllInstances() {
+        
         List<CourseInstance> courses = courseInstanceService.getAllInstances();
 
         if (courses.isEmpty()) {
@@ -49,9 +50,9 @@ public class CourseInstanceController {
     // @GetMapping("/instances/{year}/{semester}/{courseid}")
     @GetMapping("/instances/{year}/{semester}/{courseId}")
     public ResponseEntity<CourseInstance> InstanceByYearAndSemesterAndId(
-            @PathVariable int year, @PathVariable int semester, @PathVariable long courseId) {
-        CourseInstance courseInstance = courseInstanceService.InstanceByYearAndSemesterAndCourseId(year, semester,
-                courseId);
+            @PathVariable int year, @PathVariable int semester, @PathVariable String courseCode) {
+        CourseInstance courseInstance = courseInstanceService.InstanceByYearAndSemesterAndCourseCode(year, semester,
+                courseCode);
         if (courseInstance == null) {
             return ResponseEntity.notFound().build();
         }
@@ -63,8 +64,8 @@ public class CourseInstanceController {
 
     @DeleteMapping("/instances/{year}/{semester}/{courseId}")
     public ResponseEntity<String> deleteCourseInstance(@PathVariable int year, @PathVariable int semester,
-            @PathVariable long courseId) {
-        boolean isDeleted = courseInstanceService.deleteCourseInstanceByCourseId(year, semester, courseId);
+            @PathVariable String courseCode) {
+        boolean isDeleted = courseInstanceService.deleteCourseInstanceByCourseCode(year, semester, courseCode);
 
         if (isDeleted) {
             return ResponseEntity.ok("Course instance deleted successfully.");

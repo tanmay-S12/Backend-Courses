@@ -11,7 +11,7 @@ public interface CourseInstanceRepository extends JpaRepository<CourseInstanceMo
 
     List<CourseInstanceModel> findByYearAndSemester(int year, int semester);
 
-    Optional<CourseInstanceModel> findByYearAndSemesterAndCourseId(int year, int semester, Long courseId);
+    Optional<CourseInstanceModel> findByYearAndSemesterAndCourseCode(int year, int semester, String courseId);
 
     // void deleteByIdAndYearAndSemester( int year, int semester, Long courseid);
 

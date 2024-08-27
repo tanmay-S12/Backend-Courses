@@ -18,11 +18,25 @@ public class CourseService implements ICourseService {
     @Autowired
     private CourseRepository courseRepository;
 
-    public String saveCourse(Course course) {
-        CourseModel coursemodel = new CourseModel();
-        BeanUtils.copyProperties(course, coursemodel);
-        courseRepository.save(coursemodel);
-        return "Course Saved Succesfully";
+    // public String saveCourse(Course course) {
+    //     CourseModel coursemodel = new CourseModel();
+    //     BeanUtils.copyProperties(course, coursemodel);
+    //     courseRepository.save(coursemodel);
+    //     return "Course Saved Succesfully";
+    // }
+
+    public Course saveCourse(Course course) {
+        CourseModel courseModel = new CourseModel();
+        BeanUtils.copyProperties(course, courseModel);
+        
+        // Save the CourseModel to the repository and get the saved entity back
+        CourseModel savedCourseModel = courseRepository.save(courseModel);
+        
+        // Convert the saved CourseModel back to Course to return
+        Course savedCourse = new Course();
+        BeanUtils.copyProperties(savedCourseModel, savedCourse);
+        
+        return savedCourse; // Return the saved Course object
     }
 
     public List<CourseModel> getAllCourses() {

@@ -7,10 +7,10 @@ import com.backend_courses.courses_backend.service.CourseService;
 import lombok.Data;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.util.List;
 
@@ -21,16 +21,27 @@ public class CourseController {
     @Autowired
     CourseService courseService;
 
+    // @PostMapping("/courses")
+    // public String createCourse(@RequestBody Course course) {
+    // return courseService.saveCourse(course);
+    // }
+
     @PostMapping("/courses")
-    public String createCourse(@RequestBody Course course) {
-        return courseService.saveCourse(course);
+public ResponseEntity<?> createCourse(@RequestBody Course course) {
+    try {
+        Course savedCourse = courseService.saveCourse(course);
+        return ResponseEntity.ok(savedCourse);
+    } catch (DataIntegrityViolationException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body("Course code already exists: " + course.getCourseCode());
     }
+}
+
 
     @GetMapping("/courses")
     public ResponseEntity<List<CourseModel>> getAllCourses() {
         return new ResponseEntity<>(courseService.getAllCourses(), HttpStatus.FOUND);
     }
-  
 
     @GetMapping("/courses/{id}")
     public Course getCourseById(@PathVariable Long id) {
