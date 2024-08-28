@@ -21,10 +21,7 @@ public class CourseController {
     @Autowired
     CourseService courseService;
 
-    // @PostMapping("/courses")
-    // public String createCourse(@RequestBody Course course) {
-    // return courseService.saveCourse(course);
-    // }
+
 
     @PostMapping("/courses")
 public ResponseEntity<?> createCourse(@RequestBody Course course) {

@@ -2,17 +2,17 @@ package com.backend_courses.courses_backend.service;
 
 import java.util.List;
 import com.backend_courses.courses_backend.CourseInstance;
+import com.backend_courses.courses_backend.CourseInstanceDTO;
 
 public interface ICourseInstanceServices {
 
     public String saveCourseInstance(CourseInstance courseInstance);
 
-    public List<CourseInstance> getAllInstances();
+    public List<CourseInstanceDTO> getAllCourseInstances();
 
-    public List<CourseInstance> getCoursesByYearAndSemester(int year, int semester);
+    public CourseInstanceDTO getCourseInstanceByYearSemId(int year, int semester, Long courseId);
 
-    public CourseInstance InstanceByYearAndSemesterAndCourseCode(int year, int semester, String courseCode);
+    public List<CourseInstanceDTO> getCourseInstancesByYearSem(int year, int semester);
 
-    public boolean deleteCourseInstanceByCourseCode(int year, int semester, String courseCode);
-
+    
 }

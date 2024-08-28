@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ICourseService {
 
-    // public String saveCourse(Course course);
+    
     public Course saveCourse(Course course);
 
     public List<CourseModel> getAllCourses();
