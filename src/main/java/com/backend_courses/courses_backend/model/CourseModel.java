@@ -1,13 +1,17 @@
 package com.backend_courses.courses_backend.model;
 
+import java.util.List;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-
-@Data 
-@NoArgsConstructor 
+@Data
+@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 public class CourseModel {
@@ -15,14 +19,13 @@ public class CourseModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false) 
+    @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false, unique = true) 
+    @Column(nullable = false, unique = true)
     private String courseCode;
 
-    @Column(length = 1000) 
+    @Column(length = 1000)
     private String description;
-
 }
 

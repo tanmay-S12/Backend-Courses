@@ -1,0 +1,28 @@
+# version: '3.8'
+
+services:
+  backend:
+    image: tanmays62/iit-bombay-assignment:backend
+    container_name: springboot-backend
+    ports:
+      - "8080:8080" 
+    networks:
+      - app-network
+
+
+  frontend:
+    image: tanmays62/iit-bombay-assignment:frontend
+    container_name: react-frontend
+    ports:
+      - "5173:5173"  
+    
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+ 
+
+networks:
+  app-network:
+    driver: bridge

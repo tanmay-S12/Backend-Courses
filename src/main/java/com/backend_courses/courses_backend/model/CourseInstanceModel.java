@@ -27,7 +27,6 @@ public class CourseInstanceModel {
     @Column(nullable = false)
     private int semester;
 
-  
     @ManyToOne 
     @JoinColumn(name = "course_id", nullable = false) 
     private CourseModel course;

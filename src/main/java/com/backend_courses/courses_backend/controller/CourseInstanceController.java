@@ -54,5 +54,6 @@ public class CourseInstanceController {
         List<CourseInstanceDTO> instances = courseInstanceService.getCourseInstancesByYearSem(year, semester);
         return ResponseEntity.ok(instances);
     }
+  
 
 }

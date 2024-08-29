@@ -17,8 +17,6 @@ import java.util.List;
 @Service
 public class CourseInstanceService implements ICourseInstanceServices {
 
-
-
     @Autowired
     private CourseInstanceRepository courseInstanceRepository;
 
@@ -31,20 +29,18 @@ public class CourseInstanceService implements ICourseInstanceServices {
                 .collect(Collectors.toList());
     }
 
-
     private CourseInstanceDTO convertToDTOWithCourse(CourseInstanceModel instance) {
         CourseInstanceDTO dto = new CourseInstanceDTO();
         dto.setId(instance.getId());
         dto.setYear(instance.getYear());
         dto.setSemester(instance.getSemester());
         dto.setTitle(instance.getCourse().getTitle());
-        dto.setDescription(instance.getCourse().getDescription()); 
+        dto.setDescription(instance.getCourse().getDescription());
         dto.setCourseCode(instance.getCourse().getCourseCode());
         dto.setCourseid(instance.getCourse().getId());
-      
         return dto;
     }
-     
+
     @Override
     public String saveCourseInstance(CourseInstance courseInstance) {
         CourseInstanceModel imodel = new CourseInstanceModel();
@@ -53,22 +49,21 @@ public class CourseInstanceService implements ICourseInstanceServices {
         CourseModel course = courseRepository.findById(courseInstance.getCourse())
                 .orElseThrow(() -> new RuntimeException("Course not found with id: " + courseInstance.getId()));
 
-        imodel.setCourse(course); 
+        imodel.setCourse(course);
 
         courseInstanceRepository.save(imodel);
         return "Instance Saved Successfully.";
     }
-
 
     public String deleteCourseInstanceByCourseId(int year, int semester, Long courseId) {
         courseInstanceRepository.deleteByYearAndSemesterAndCourseId(year, semester, courseId);
         return "Deleted Successfully.";
     }
 
-
-// second
+    // second
     public CourseInstanceDTO getCourseInstanceByYearSemId(int year, int semester, Long courseId) {
-        CourseInstanceModel instance = courseInstanceRepository.findByYearAndSemesterAndCourseId(year, semester, courseId);
+        CourseInstanceModel instance = courseInstanceRepository.findByYearAndSemesterAndCourseId(year, semester,
+                courseId);
         return convertToDTO(instance);
     }
 
@@ -79,7 +74,7 @@ public class CourseInstanceService implements ICourseInstanceServices {
         return dto;
     }
 
-    // third 
+    // third
     public List<CourseInstanceDTO> getCourseInstancesByYearSem(int year, int semester) {
         List<CourseInstanceModel> instances = courseInstanceRepository.findByYearAndSemester(year, semester);
         return instances.stream()
@@ -90,11 +85,12 @@ public class CourseInstanceService implements ICourseInstanceServices {
     private CourseInstanceDTO convertyrsemToDTO(CourseInstanceModel instance) {
         CourseInstanceDTO dto = new CourseInstanceDTO();
         BeanUtils.copyProperties(instance, dto);
-        dto.setCourseid(instance.getCourse().getId()); 
+        dto.setCourseid(instance.getCourse().getId());
         return dto;
     }
 
+
+
+
+    
 }
-
-
-

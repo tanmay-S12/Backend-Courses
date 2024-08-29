@@ -21,19 +21,16 @@ public class CourseController {
     @Autowired
     CourseService courseService;
 
-
-
     @PostMapping("/courses")
-public ResponseEntity<?> createCourse(@RequestBody Course course) {
-    try {
-        Course savedCourse = courseService.saveCourse(course);
-        return ResponseEntity.ok(savedCourse);
-    } catch (DataIntegrityViolationException e) {
-        return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body("Course code already exists: " + course.getCourseCode());
+    public ResponseEntity<?> createCourse(@RequestBody Course course) {
+        try {
+            Course savedCourse = courseService.saveCourse(course);
+            return ResponseEntity.ok(savedCourse);
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("Course code already exists: " + course.getCourseCode());
+        }
     }
-}
-
 
     @GetMapping("/courses")
     public ResponseEntity<List<CourseModel>> getAllCourses() {
